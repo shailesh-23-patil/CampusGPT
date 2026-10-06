@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CampusGPT — AI-powered student learning assistant using Retrieval-Augmented Generation to answer questions from your uploaded study material.">
+
+    <title>CampusGPT — AI Student Learning Assistant</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+            href="{{ url_for('static', filename='style.css', v='20261006') }}">
+</head>
+
+<body class="{% if page_background_available %}has-page-background{% endif %}">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                <span>✦</span>
+            </div>
+
+            <div class="brand-text">
+                <h1>CampusGPT</h1>
+                <p>Student Learning Assistant</p>
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="navigation">
+
+            <div class="nav-title">
+                WORKSPACE
+            </div>
+
+            <a href="#" class="nav-item active">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#documents" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Documents</span>
+            </a>
+
+            <a href="#chat" class="nav-item">
+                <span class="nav-icon">◉</span>
+                <span>AI Assistant</span>
+            </a>
+
+        </nav>
+
+
+        <!-- =================================================
+             API KEY PANEL
+        ================================================== -->
+
+        <div class="api-panel">
+
+            <div class="api-panel-title">
+                🔑 Gemini API
+            </div>
+
+            <p>
+                Enter your Gemini API key to activate CampusGPT.
+            </p>
+
+            <input
+                type="password"
+                id="apiKeyInput"
+                placeholder="Enter Gemini API key"
+                autocomplete="off"
+            >
+
+            <button
+                id="connectButton"
+                class="connect-button"
+                type="button"
+            >
+                Connect Gemini
+            </button>
+
+            <div
+                id="apiStatus"
+                class="api-status"
+            >
+                ⚪ Not connected
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR STATUS -->
+
+        <div class="sidebar-bottom">
+
+            <div class="ai-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>AI System</strong>
+                    <small>Ready to assist</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="breadcrumb">
+
+                <span>CampusGPT</span>
+
+                <span class="breadcrumb-arrow">
+                    /
+                </span>
+
+                <strong>Dashboard</strong>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="online-status">
+
+                    <span class="online-dot"></span>
+
+                    Gemini AI Online
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             HERO SECTION
+        ================================================== -->
+
+        <section class="hero-section" aria-label="CampusGPT introduction">
+
+            <div class="hero-sticky-frame" id="heroScene">
+
+                <div class="hero-code-rail hero-code-rail-left" aria-hidden="true">
+                    <pre class="hero-code-track" id="codeTrackLeft">section .data
+msg db "Build something that matters", 0x0a
+msg_len equ $ - msg
+
+section .text
+global _start
+_start:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg
+    mov rdx, msg_len
+    syscall
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+section .data
+query db "SELECT knowledge", 0x0a
+query_len equ $ - query
+
+section .text
+global _start
+_start:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, query
+    mov rdx, query_len
+    syscall
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+section .data
+msg db "Build something that matters", 0x0a
+msg_len equ $ - msg
+
+section .text
+global _start
+_start:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg
+    mov rdx, msg_len
+    syscall</pre>
+                </div>
+
+                <div class="hero-code-rail hero-code-rail-right" aria-hidden="true">
+                    <pre class="hero-code-track" id="codeTrackRight">section .data
+thought resb 64
+status db "learning in progress", 0x0a
+
+section .text
+global _start
+_start:
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, thought
+    mov rdx, 64
+    syscall
+    cmp rax, 0
+    jle .done
+
+.done:
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+section .data
+question db "What will you learn today?", 0x0a
+question_len equ $ - question
+
+section .text
+global _start
+_start:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, question
+    mov rdx, question_len
+    syscall
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+section .data
+thought resb 64
+status db "learning in progress", 0x0a
+
+section .text
+global _start
+_start:
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, thought
+    mov rdx, 64
+    syscall</pre>
+                </div>
+
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+                        <span class="hero-badge-light"></span>
+                        YOUR STUDY SPACE
+                    </div>
+
+                    <h2>
+                        Learn smarter with
+                        <span>CampusGPT.</span>
+                    </h2>
+
+                    <p>
+                        Bring your notes into focus. Ask questions and explore answers grounded in your study material.
+                    </p>
+
+                    <a class="hero-action" href="#documents">
+                        <span>Open study material</span>
+                        <span class="hero-action-arrow" aria-hidden="true">↘</span>
+                    </a>
+
+                </div>
+
+                <div class="hero-scroll-cue" aria-hidden="true">
+                    <span>SCROLL TO MOVE THE CODE</span>
+                    <span class="hero-scroll-line"></span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DOCUMENT SECTION
+        ================================================== -->
+
+        <section
+            class="section"
+            id="documents"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        KNOWLEDGE BASE
+                    </span>
+
+                    <h3>
+                        Study Material
+                    </h3>
+
+                    <p>
+                        Upload one or more subject PDFs to create your learning knowledge base.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- UPLOAD CARD -->
+
+            <div
+                class="upload-card"
+                id="uploadCard"
+            >
+
+                <div class="upload-icon">
+                    ↑
+                </div>
+
+                <div class="upload-content">
+
+                    <h4>
+                        Upload PDF documents
+                    </h4>
+
+                    <p>
+                        Browse to the project notes folder and select the subject PDFs you want to use.
+                    </p>
+
+                    <span class="upload-format">
+                        PDF files only
+                    </span>
+
+                </div>
+
+
+                <input
+                    type="file"
+                    id="pdfInput"
+                    accept=".pdf,application/pdf"
+                    multiple
+                    hidden
+                >
+
+                <button
+                    type="button"
+                    class="browse-button"
+                    onclick="document.getElementById('pdfInput').click()"
+                >
+                    Browse Files
+                </button>
+
+            </div>
+
+
+
+            <!-- FILE LIST -->
+
+            <div
+                id="fileList"
+                class="file-list"
+            ></div>
+
+
+
+            <!-- DOCUMENT DASHBOARD -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- DOCUMENT COUNT -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-top">
+
+                        <div class="dashboard-icon purple">
+                            ▤
+                        </div>
+
+                        <span class="dashboard-card-label">
+                            DOCUMENTS
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="documentCount"
+                        class="dashboard-number"
+                    >
+                        0
+                    </div>
+
+                    <p>
+                        Uploaded documents
+                    </p>
+
+                </div>
+
+
+
+                <!-- CHUNK COUNT -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-top">
+
+                        <div class="dashboard-icon blue">
+                            ◈
+                        </div>
+
+                        <span class="dashboard-card-label">
+                            KNOWLEDGE CHUNKS
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="chunkCount"
+                        class="dashboard-number"
+                    >
+                        0
+                    </div>
+
+                    <p>
+                        Indexed text chunks
+                    </p>
+
+                </div>
+
+
+
+                <!-- AI STATUS -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-top">
+
+                        <div class="dashboard-icon green">
+                            ✓
+                        </div>
+
+                        <span class="dashboard-card-label">
+                            AI STATUS
+                        </span>
+
+                    </div>
+
+                    <div class="dashboard-status">
+                        Ready
+                    </div>
+
+                    <p>
+                        RAG system status
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PROCESS BUTTON -->
+
+            <div class="process-area">
+
+                <button
+                    id="processButton"
+                    class="process-button"
+                    type="button"
+                >
+
+                    <span class="process-icon">
+                        ✦
+                    </span>
+
+                    <span>
+                        Process Study Material
+                    </span>
+
+                </button>
+
+                <p>
+                    CampusGPT will index the selected subject notes and uploaded PDFs.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CHAT SECTION
+        ================================================== -->
+
+        <section
+            class="section chat-section"
+            id="chat"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        AI ASSISTANT
+                    </span>
+
+                    <h3>
+                        Ask CampusGPT
+                    </h3>
+
+                    <p>
+                        Ask questions about your uploaded
+                        study material.
+                    </p>
+
+                </div>
+
+                <div class="chat-status">
+
+                    <span class="chat-status-dot"></span>
+
+                    Ready
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHAT BOX -->
+
+            <div class="chat-card">
+
+
+                <!-- CHAT HEADER -->
+
+                <div class="chat-header">
+
+                    <div class="chat-header-left">
+
+                        <div class="chat-avatar">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                CampusGPT Assistant
+                            </strong>
+
+                            <span>
+                                Powered by RAG
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chat-header-status">
+
+                        <span></span>
+
+                        Online
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CHAT MESSAGES -->
+
+                <div
+                    id="chatContainer"
+                    class="chat-container"
+                >
+
+                    <div class="welcome-message">
+
+                        <div class="welcome-icon">
+                            ✦
+                        </div>
+
+                        <h4>
+                            Hello! I'm CampusGPT.
+                        </h4>
+
+                        <p>
+                            Upload and process your study
+                            material, then ask me anything
+                            about it.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SUGGESTED QUESTIONS -->
+
+                <div class="suggestions-area">
+
+                    <span class="suggestions-title">
+                        Suggested questions
+                    </span>
+
+                    <div class="suggestions">
+
+                        <button
+                            type="button"
+                            class="suggestion"
+                            data-question="What is a Database Management System?"
+                        >
+                            What is DBMS?
+                        </button>
+
+                        <button
+                            type="button"
+                            class="suggestion"
+                            data-question="What are the advantages of DBMS?"
+                        >
+                            Advantages of DBMS
+                        </button>
+
+                        <button
+                            type="button"
+                            class="suggestion"
+                            data-question="Explain ACID properties."
+                        >
+                            Explain ACID properties
+                        </button>
+
+                        <button
+                            type="button"
+                            class="suggestion"
+                            data-question="What is a transaction in DBMS?"
+                        >
+                            What is a transaction?
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CHAT INPUT -->
+
+                <div class="chat-input-area">
+
+                    <div class="chat-input-wrapper">
+
+                        <input
+                            type="text"
+                            id="questionInput"
+                            placeholder="Ask a question about your study material..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="sendButton"
+                            class="send-button"
+                            title="Send question"
+                        >
+                            ↑
+                        </button>
+
+                    </div>
+
+                    <p class="chat-disclaimer">
+                        CampusGPT answers using information
+                        retrieved from your uploaded documents.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="footer">
+
+            <div>
+
+                <strong>
+                    CampusGPT
+                </strong>
+
+                <span>
+                    AI-Powered Student Learning Assistant
+                </span>
+
+            </div>
+
+            <div>
+
+                MCA Minor Project
+
+            </div>
+
+        </footer>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='script.js', v='20261006') }}">
+    </script>
+
+</body>
+
+</html>
